@@ -43,7 +43,15 @@ COPY .env.example .env
 
 RUN mkdir -p /var/www/storage/logs && chmod -R 777 /var/www/storage
 
-RUN php artisan cache:clear && php artisan config:clear && php artisan view:clear
+# Configurar las variables de entorno para la base de datos SQLite
+ENV DB_CONNECTION=sqlite
+ENV DB_DATABASE=/var/www/database/database.sqlite
+
+# Crear la base de datos SQLite
+RUN touch /var/www/database/database.sqlite
+
+# Ejecutar las migraciones de Laravel
+RUN php artisan migrate --force && php artisan key:generate && php artisan cache:clear && php artisan config:clear && php artisan view:clear
 
 # Copy existing application directory permissions
 COPY --chown=www:www . /var/www
