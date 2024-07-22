@@ -43,7 +43,7 @@ COPY .env.example .env
 
 RUN mkdir -p /var/www/storage/logs && chmod -R 777 /var/www/storage
 
-RUN php artisan key:generate && php artisan cache:clear && php artisan config:clear && php artisan view:clear
+RUN php artisan cache:clear && php artisan config:clear && php artisan view:clear
 
 # Copy existing application directory permissions
 COPY --chown=www:www . /var/www
